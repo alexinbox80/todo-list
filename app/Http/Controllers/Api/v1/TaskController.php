@@ -11,6 +11,7 @@ use App\Services\Response\ResponseService;
 use App\Services\Task\TaskService;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Event;
 
 class TaskController extends Controller
 {
@@ -113,8 +114,11 @@ class TaskController extends Controller
         StoreRequest    $request
     ): JsonResponse
     {
+        $task = $taskService->store($request->validated());
+        event('task.creating', [$task]);
+
         return $responseService->success([
-            TaskResource::make($taskService->store($request->validated()))
+            TaskResource::make($task)
         ]);
     }
 
@@ -223,13 +227,14 @@ class TaskController extends Controller
      *      ),
      * )
      *
+     * @param Task $task
      * @param UpdateRequest $request
      * @param ResponseService $responseService
      * @param TaskService $taskService
      * @return JsonResponse
      */
     public function update(
-        Task $task,
+        Task            $task,
         UpdateRequest   $request,
         ResponseService $responseService,
         TaskService     $taskService
@@ -238,6 +243,8 @@ class TaskController extends Controller
         $validated = $request->validated();
 
         $task = $taskService->update($task, $validated);
+
+        event('task.updating', [$task]);
 
         if (!is_null($task))
             return $responseService->success([TaskResource::make($task['data'])]);
@@ -286,6 +293,9 @@ class TaskController extends Controller
     ): JsonResponse
     {
         $response = $taskService->destroy($task);
+
+        event('task.deleting', [$task]);
+
         if ($response)
             return $responseService->success([
                 'message' => __('messages.task.destroy.success')
