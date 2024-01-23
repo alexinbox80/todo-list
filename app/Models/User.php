@@ -6,11 +6,50 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *     title="User",
+ *     description="пользователи",
+ *     @OA\Xml(
+ *         name="User"
+ *     )
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * @OA\Property(
+     *     title="id",
+     *     description="id",
+     *     format="int64",
+     *     example=1
+     * )
+     */
+    private int $id;
+
+    /**
+     * @OA\Property(
+     *     title="name",
+     *     description="имя пользователя",
+     *     format="string",
+     *     example="Имя"
+     * )
+     */
+    private string $name;
+
+    /**
+     * @OA\Property(
+     *     title="email",
+     *     description="электронная почта пользователя",
+     *     format="string",
+     *     example="mail@mail.ru"
+     * )
+     */
+    private string $email;
 
     /**
      * The attributes that are mass assignable.

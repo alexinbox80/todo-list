@@ -1,0 +1,352 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OpenApi Documentation",
+        "description": "Документация для task-api",
+        "contact": {
+            "email": "hello@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://api.tasks.loc",
+            "description": "Основной API"
+        }
+    ],
+    "paths": {
+        "/api": {},
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login api",
+                "description": "Авторизация пользователя",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Пароль пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "status",
+                                            "format": "boolean",
+                                            "example": true
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        },
+                                        "data": {
+                                            "description": "data",
+                                            "properties": {
+                                                "token": {
+                                                    "description": "token",
+                                                    "format": "string",
+                                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiZmJkMTJmNzJkYjRkMmY4M2RiYzZkNGNkNDFiNWMwYTJkMDU5NjM5NWY5Y2I5YWUyZWI2YzQzYTIwNWY4ZGQyMzRhZDBjMzA2OWIxN2I1N2YiLCJpYXQiOjE2ODQxMjgwNDMuODQ2ODU1LCJuYmYiOjE2ODQxMjgwNDMuODQ2ODU4LCJleHAiOjE3MTU3NTA0NDMuODM4OTc4LCJzdWIiOiIxMiIsInNjb3BlcyI6W119.KDXv0MMfi3P97L8KXFoHO62dT6chg_4kOgT49DLpD5Lc5UG_YOangQZuURIxVgKIiE3tZwPgV4MuID4u4FgyopFRaRWGazjwIkjHGywpI_e7dzF6FOck8ePeUUBXlybsLpThzzPRKbYmq5Wxnv-hbx6-doGx9CCjw9TRexjRRuqWLv6d0ZpIPIyzbHbG3cZcSAgms0JMN6WLBuJNkdW2kFuhbC9uMu5KhOK1MdX4vULb1XcZJpRx2gjac6B8l79sH8y1pt6beGljUyzwTKTx1B2Onm5LJZ6ipcXMwuoR2MZY1YbihLbMqTATuCTCpBFlMzXi9vwE1GbJIt-wDJff33Y2C7Iq1AN-RMNjFKlckd-SYNwdT5CFOvWVV5UOG0sIdXNZayZ7fDAi3wSm7C8s9PiJkDvh-f1g7VFl4pmTN3DONMZQemkOtnBQuqfjbMz0GghdzdDA64PjMZrZbw5qi7NB21bQIy4ilh5xDT9Ai0dzV2KUdj9bfONgE_LgDWCy005cuwvuRoMckQiRpJH6jw8Qez0cu0HQ7TJksCUmtbzD6zS0GblrYJ9CozjMMMMXB2tnTXZy3BJ_lZVmDJmbiUq-O1radHkuE_Ou9XQCc0IN6iqa701cFxxjzmU_cK39OWv2RDu7S7bOeARwk71ZR_co2j5_b3D9cMjpy2rpjcw"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "description": "Выход из аккаунта. Нужно передавать персональный токен пользователя",
+                "operationId": "logoutUser",
+                "responses": {
+                    "200": {
+                        "description": "LoggedOut",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "format": "string",
+                                            "example": "Logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tasks": {
+            "get": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Получение списка всех задач, принадлежащих пользователю",
+                "operationId": "tasks.index",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "path",
+                        "description": "статус беседы",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "active, done, remove"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Store a newly created resource in storage.",
+                "description": "Создать задание",
+                "operationId": "tasks.store",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "название задания",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "описание задания",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/{task_id}": {
+            "get": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Display the specified resource.",
+                "description": "Показать задание по идентификатору",
+                "operationId": "tasks.show",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "идентификатор задания",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Update the specified resource in storage.",
+                "description": "Обновить поля задания по идентификатору",
+                "operationId": "tasks.update",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "идентификатор задания",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "path",
+                        "description": "заголовок задания",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "description": "описание задания",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "path",
+                        "description": "статус задания",
+                        "required": true,
+                        "schema": {
+                            "type": "['active', 'done', 'remove']"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Task": {
+                "title": "Task",
+                "description": "список задач",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "title": "user_id",
+                        "description": "идентификатор пользователя",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "заголовок задачи",
+                        "type": "string",
+                        "format": "title",
+                        "example": "заголовок"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "описание задачи",
+                        "type": "string",
+                        "format": "description",
+                        "example": "описание"
+                    },
+                    "status": {
+                        "title": "status",
+                        "description": "статус задачи",
+                        "type": "string",
+                        "format": "status",
+                        "example": "enam('active', 'done', 'remove')"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Task"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "пользователи",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "имя пользователя",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Имя"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "электронная почта пользователя",
+                        "type": "string",
+                        "format": "string",
+                        "example": "mail@mail.ru"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "auth",
+            "description": "authorize"
+        }
+    ]
+}
