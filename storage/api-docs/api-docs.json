@@ -260,6 +260,33 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Remove the specified resource from storage.",
+                "description": "Удалить задание по идентификатору",
+                "operationId": "tasks.destroy",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "идентификатор задания",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
             }
         }
     },

@@ -23,6 +23,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        User::factory()->create([
+            'name' => 'manager manager',
+            'email' => 'manager@task.loc',
+            'password' => Hash::make('password'),
+        ]);
+
         Task::factory($this->count)->create();
     }
 }

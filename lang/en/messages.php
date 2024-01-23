@@ -2,6 +2,9 @@
 
 return [
     'task' => [
+        'update' => [
+            'failed' => 'it\'s not your task'
+        ],
         'store' => [
             'failed' => 'wrong task ID'
         ],

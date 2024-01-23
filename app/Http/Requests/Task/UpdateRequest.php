@@ -23,8 +23,6 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $this->merge(['task' => $this->task]);
-
         $status = [
             TaskStatus::ACTIVE->value,
             TaskStatus::DONE->value,
@@ -32,7 +30,6 @@ class UpdateRequest extends FormRequest
         ];
 
         return [
-            'task' => ['required', 'exists:tasks,id'],
             'title' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'status' => ['nullable', 'string', Rule::in($status)]

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Task\DestroyRequest;
-use App\Http\Requests\Task\ShowRequest;
 use App\Http\Requests\Task\StatusRequest;
 use App\Http\Requests\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
@@ -13,7 +11,6 @@ use App\Services\Response\ResponseService;
 use App\Services\Task\TaskService;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -148,20 +145,18 @@ class TaskController extends Controller
      *      ),
      * )
      *
-     * @param ShowRequest $request
+     * @param Task $task
      * @param ResponseService $responseService
      * @param TaskService $taskService
      * @return JsonResponse
      */
     public function show(
-        ShowRequest     $request,
+        Task            $task,
         ResponseService $responseService,
         TaskService     $taskService
     ): JsonResponse
     {
-        $validated = $request->validated();
-
-        $task = $taskService->show($validated);
+        $task = $taskService->show($task);
 
         if (!is_null($task))
             return $responseService->success([TaskResource::make($task['data'])]);
@@ -234,6 +229,7 @@ class TaskController extends Controller
      * @return JsonResponse
      */
     public function update(
+        Task $task,
         UpdateRequest   $request,
         ResponseService $responseService,
         TaskService     $taskService
@@ -241,7 +237,7 @@ class TaskController extends Controller
     {
         $validated = $request->validated();
 
-        $task = $taskService->update($validated);
+        $task = $taskService->update($task, $validated);
 
         if (!is_null($task))
             return $responseService->success([TaskResource::make($task['data'])]);
@@ -289,14 +285,14 @@ class TaskController extends Controller
         TaskService     $taskService
     ): JsonResponse
     {
-       if ($taskService->destroy($task))
-                return $responseService->success([
-                    'message' => __('messages.task.destroy.success')
-                ]);
-           else
-               return $responseService->unSuccess([
-                   'message' => __('messages.task.destroy.failed')
-               ]);
-
+        $response = $taskService->destroy($task);
+        if ($response)
+            return $responseService->success([
+                'message' => __('messages.task.destroy.success')
+            ]);
+        else
+            return $responseService->unSuccess([
+                'message' => __('messages.task.destroy.failed')
+            ]);
     }
 }

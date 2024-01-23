@@ -54,12 +54,11 @@ class TaskService
     }
 
     /**
-     * @param array $validated
+     * @param Task $task
      * @return array|null
      */
-    public function show(array $validated): array|null
+    public function show(Task $task): array|null
     {
-        $task = Task::find($validated['task']);
         $userId = Auth::id();
 
         if ($task->user_id === $userId)
@@ -71,33 +70,33 @@ class TaskService
     }
 
     /**
+     * @param Task $task
      * @param array $validated
      * @return array|null
      */
-    public function update(array $validated): array|null
+    public function update(Task $task, array $validated): array|null
     {
         $userId = Auth::id();
 
-        $task = Task::where([
-            'id' => $validated['task'],
-            'user_id' => $userId,
-        ])->first();
-        $task->update($validated);
-
-        if ($task)
+        if ($task->user_id === $userId) {
+            $task->update($validated);
             return [
                 'data' => $task->refresh()
             ];
-        else
+        } else
             return null;
     }
 
     /**
      * @param Task $task
-     * @return bool
+     * @return bool|null
      */
-    public function destroy(Task $task): bool
+    public function destroy(Task $task): bool|null
     {
-        return $task->delete();
+        $userId = Auth::id();
+        if ($task->user_id === $userId)
+            return $task->delete();
+        else
+            return null;
     }
 }
