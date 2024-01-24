@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\v1\TaskController;
+use App\Http\Controllers\Api\v1\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +33,13 @@ Route::middleware('auth:api')->group(function () {
         'show' => 'tasks.show',
         'update' => 'tasks.update',
         'destroy' => 'tasks.destroy',
+    ]);
+
+    Route::apiResource('event', EventController::class)->names([
+        'store' => 'event.store',
+        'destroy' => 'event.destroy',
+    ])->only([
+        'store',
+        'destroy'
     ]);
 });

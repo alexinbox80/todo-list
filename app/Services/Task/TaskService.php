@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class TaskService
 {
     /**
-     * @param string $status
+     * @param string|null $status
      * @return array
      */
     public function index(string $status = null): array

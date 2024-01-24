@@ -292,6 +292,37 @@
     },
     "components": {
         "schemas": {
+            "Event": {
+                "title": "Event",
+                "description": "События",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "идентификатор события",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "событие",
+                        "type": "string",
+                        "format": "title",
+                        "example": "task.updated"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "описание события",
+                        "type": "string",
+                        "format": "description",
+                        "example": "описание"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Event"
+                }
+            },
             "Task": {
                 "title": "Task",
                 "description": "список задач",
