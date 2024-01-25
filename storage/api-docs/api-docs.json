@@ -113,6 +113,53 @@
                 ]
             }
         },
+        "/api/v1/event": {
+            "post": {
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Store a newly created resource in storage.",
+                "description": "Создать событие",
+                "operationId": "event.store",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "query",
+                        "description": "идентификатор задания",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "название события",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "описание события",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tasks": {
             "get": {
                 "tags": [
@@ -299,6 +346,13 @@
                     "id": {
                         "title": "id",
                         "description": "идентификатор события",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "task_id": {
+                        "title": "task_id",
+                        "description": "идентификатор задания",
                         "type": "integer",
                         "format": "int64",
                         "example": 1

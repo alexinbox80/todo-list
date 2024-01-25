@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 128);
+            $table->unsignedBigInteger('task_id')->nullable();
+            $table->foreign('task_id')->references('id')->on('tasks')->nullOnDelete();
+            $table->string('type_event', 128);
             $table->text('description')->nullable();
+            //$table->unique(['task_id', 'type_event']);
             $table->timestamps();
         });
     }

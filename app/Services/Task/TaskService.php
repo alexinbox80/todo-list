@@ -94,9 +94,9 @@ class TaskService
     public function destroy(Task $task): bool|null
     {
         $userId = Auth::id();
-        if ($task->user_id === $userId)
+        if ($task->user_id === $userId) {
             return $task->delete();
-        else
+        } else
             return null;
     }
 }

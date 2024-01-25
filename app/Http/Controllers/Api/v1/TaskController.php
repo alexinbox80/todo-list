@@ -11,7 +11,6 @@ use App\Services\Response\ResponseService;
 use App\Services\Task\TaskService;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Event;
 
 class TaskController extends Controller
 {
@@ -115,7 +114,6 @@ class TaskController extends Controller
     ): JsonResponse
     {
         $task = $taskService->store($request->validated());
-        event('task.creating', [$task]);
 
         return $responseService->success([
             TaskResource::make($task)

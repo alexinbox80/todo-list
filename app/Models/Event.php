@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @OA\Schema(
@@ -30,13 +31,23 @@ class Event extends Model
 
     /**
      * @OA\Property(
-     *     title="title",
-     *     description="событие",
-     *     format="title",
-     *     example="task.updated"
+     *     title="task_id",
+     *     description="идентификатор задания",
+     *     format="int64",
+     *     example=1
      * )
      */
-    private string $title;
+    private int $task_id;
+
+    /**
+     * @OA\Property(
+     *     title="type_event",
+     *     description="событие",
+     *     format="title",
+     *     example="updated"
+     * )
+     */
+    private string $type_event;
 
     /**
      * @OA\Property(
@@ -54,7 +65,13 @@ class Event extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
+        'task_id',
+        'type_event',
         'description'
     ];
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
