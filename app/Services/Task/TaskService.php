@@ -2,8 +2,16 @@
 
 namespace App\Services\Task;
 
-use App\Enums\TaskStatus;
+use App\Models\Event;
 use App\Models\Task;
+use App\Enums\TaskStatus;
+use App\Enums\TypeEvent;
+use App\Events\TaskCreatedEvent;
+use App\Events\TaskCreatingEvent;
+use App\Events\TaskDeletedEvent;
+use App\Events\TaskDeletingEvent;
+use App\Events\TaskUpdatedEvent;
+use App\Events\TaskUpdatingEvent;
 use Illuminate\Support\Facades\Auth;
 
 class TaskService
@@ -44,11 +52,19 @@ class TaskService
      */
     public function store(array $validated): Task
     {
+        if (Event::propertyIsSet(TypeEvent::CREATING->value)) {
+            event(new TaskCreatingEvent);
+        }
+
         $validated['user_id'] = Auth::user()->id;
 
         $task = Task::create(
             $validated
         );
+
+        if (Event::propertyIsSet(TypeEvent::CREATED->value)) {
+            event(new TaskCreatedEvent);
+        }
 
         return $task->refresh();
     }
@@ -76,10 +92,19 @@ class TaskService
      */
     public function update(Task $task, array $validated): array|null
     {
+        if (Event::propertyIsSet(TypeEvent::UPDATING->value)) {
+            event(new TaskUpdatingEvent);
+        }
+
         $userId = Auth::id();
 
         if ($task->user_id === $userId) {
             $task->update($validated);
+
+            if (Event::propertyIsSet(TypeEvent::UPDATED->value)) {
+                event(new TaskUpdatedEvent);
+            }
+
             return [
                 'data' => $task->refresh()
             ];
@@ -93,8 +118,16 @@ class TaskService
      */
     public function destroy(Task $task): bool|null
     {
+        if (Event::propertyIsSet(TypeEvent::DELETING->value)) {
+            event(new TaskDeletingEvent);
+        }
+
         $userId = Auth::id();
         if ($task->user_id === $userId) {
+            if (Event::propertyIsSet(TypeEvent::DELETED->value)) {
+                event(new TaskDeletedEvent);
+            }
+
             return $task->delete();
         } else
             return null;

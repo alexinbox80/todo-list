@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Event\StoreRequest;
 use App\Http\Resources\Event\EventResource;
+use App\Models\Event;
 use App\Services\Response\ResponseService;
 use App\Services\Event\EventService;
 use Illuminate\Http\JsonResponse;
@@ -106,9 +107,51 @@ class EventController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @OA\Delete(
+     *     path="/api/v1/event/{event_id}",
+     *     operationId="event.destroy",
+     *     tags={"Event"},
+     *     description="Удалить событие по идентификатору",
+     *
+     *     @OA\Parameter(
+     *          name="event_id",
+     *          description="идентификатор событие",
+     *          required=true,
+     *          in="path",
+     *           @OA\Schema(
+     *              type="integer",
+     *          ),
+     *      ),
+     *
+     *     @OA\Response(response="200",
+     *          description="OK",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          ),
+     *      ),
+     * )
+     *
+     * @param Event $event
+     * @param ResponseService $responseService
+     * @param EventService $eventService
+     * @return JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(
+        Event           $event,
+        ResponseService $responseService,
+        EventService    $eventService
+    ): JsonResponse
     {
-        //
+        $response = $eventService->destroy($event);
+
+        if ($response)
+            return $responseService->success([
+                'message' => __('messages.event.destroy.success')
+            ]);
+        else
+            return $responseService->unSuccess([
+                'message' => __('messages.event.destroy.failed')
+            ]);
     }
 }

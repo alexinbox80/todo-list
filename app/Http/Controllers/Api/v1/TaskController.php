@@ -242,8 +242,6 @@ class TaskController extends Controller
 
         $task = $taskService->update($task, $validated);
 
-        event('task.updating', [$task]);
-
         if (!is_null($task))
             return $responseService->success([TaskResource::make($task['data'])]);
         else
@@ -291,8 +289,6 @@ class TaskController extends Controller
     ): JsonResponse
     {
         $response = $taskService->destroy($task);
-
-        event('task.deleting', [$task]);
 
         if ($response)
             return $responseService->success([

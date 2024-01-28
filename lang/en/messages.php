@@ -15,5 +15,11 @@ return [
             'success' => 'task deleted successfully',
             'failed' => 'failed to delete task'
         ]
+    ],
+    'event' => [
+        'destroy' => [
+            'success' => 'event deleted successfully',
+            'failed' => 'failed to delete event'
+        ]
     ]
 ];

@@ -160,6 +160,35 @@
                 }
             }
         },
+        "/api/v1/event/{event_id}": {
+            "delete": {
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Remove the specified resource from storage.",
+                "description": "Удалить событие по идентификатору",
+                "operationId": "event.destroy",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "description": "идентификатор событие",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tasks": {
             "get": {
                 "tags": [
@@ -357,12 +386,12 @@
                         "format": "int64",
                         "example": 1
                     },
-                    "title": {
-                        "title": "title",
+                    "type_event": {
+                        "title": "type_event",
                         "description": "событие",
                         "type": "string",
                         "format": "title",
-                        "example": "task.updated"
+                        "example": "updated"
                     },
                     "description": {
                         "title": "description",

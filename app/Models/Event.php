@@ -70,6 +70,19 @@ class Event extends Model
         'description'
     ];
 
+    /**
+     * @param string $typeEvent
+     * @return bool
+     */
+    public static function propertyIsSet(string $typeEvent): bool
+    {
+        $event = Event::where('type_event', $typeEvent)->first();
+        if (isset($event))
+            return $event->getAttribute('type_event') === $typeEvent;
+        else
+            return false;
+    }
+
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);

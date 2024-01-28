@@ -28,6 +28,8 @@ class StoreRequest extends FormRequest
             TypeEvent::CREATING->value,
             TypeEvent::UPDATED->value,
             TypeEvent::UPDATING->value,
+            TypeEvent::SAVED->value,
+            TypeEvent::SAVING->value,
             TypeEvent::DELETED->value,
             TypeEvent::DELETING->value
         ];

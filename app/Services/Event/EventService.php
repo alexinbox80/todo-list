@@ -15,7 +15,7 @@ class EventService
      */
     public function store(array $validated): Event|null
     {
-        $task = Task::find($validated['task_id'])->first();
+        $task = Task::find($validated['task_id']);
         if ($task->user_id === Auth::id()) {
             $event = Event::create(
                 $validated
@@ -24,7 +24,6 @@ class EventService
             return $event;
         } else
             return null;
-
     }
 
     /**
@@ -33,6 +32,10 @@ class EventService
      */
     public function destroy(Event $event): bool|null
     {
-        return false;
+        $task = Task::find($event->getAttribute('task_id'));
+        if ($task->user_id === Auth::id()) {
+            return $event->delete();
+        } else
+            return null;
     }
 }
